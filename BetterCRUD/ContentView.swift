@@ -6,56 +6,52 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @StateObject private var viewModel = ItemViewModel()
+    @State private var editingItem: Item? = nil
+    @State private var editedName: String = ""
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+        NavigationView {
+            VStack {
+                HStack {
+                    TextField("New item name", text: $viewModel.newItemName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Button("Add") {
+                        viewModel.addItem()
                     }
+                }.padding()
+                List {
+                    ForEach(viewModel.items) { item in
+                        HStack {
+                            if editingItem?.id == item.id {
+                                TextField("Edit name", text: $editedName)
+                                Button("Save") {
+                                    viewModel.updateItem(item, with: editedName)
+                                    editingItem = nil
+                                }
+                                Button("Cancel") {
+                                    editingItem = nil
+                                }
+                            } else {
+                                Text(item.name)
+                                Spacer()
+                                Button("Edit") {
+                                    editingItem = item
+                                    editedName = item.name
+                                }
+                            }
+                        }
+                    }
+                    .onDelete(perform: viewModel.deleteItem)
                 }
-                .onDelete(perform: deleteItems)
             }
+            .navigationTitle("Items CRUD")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+                EditButton()
             }
         }
     }
-}
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
