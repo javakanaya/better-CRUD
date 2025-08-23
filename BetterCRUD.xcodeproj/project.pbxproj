@@ -37,6 +37,20 @@
 			);
 			target = 14C66C322E52014D00FA5F0F /* BetterCRUD */;
 		};
+		14DCDA402E59889B0003AA3F /* Exceptions for "BetterCRUDTests" folder in "BetterCRUD" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Helpers/MockContainer.swift,
+			);
+			target = 14C66C322E52014D00FA5F0F /* BetterCRUD */;
+		};
+		14DCDA412E59889B0003AA3F /* Exceptions for "BetterCRUDTests" folder in "BetterCRUDTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Helpers/MockContainer.swift,
+			);
+			target = 14C66C432E52014E00FA5F0F /* BetterCRUDTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -50,6 +64,10 @@
 		};
 		14C66C472E52014E00FA5F0F /* BetterCRUDTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				14DCDA402E59889B0003AA3F /* Exceptions for "BetterCRUDTests" folder in "BetterCRUD" target */,
+				14DCDA412E59889B0003AA3F /* Exceptions for "BetterCRUDTests" folder in "BetterCRUDTests" target */,
+			);
 			path = BetterCRUDTests;
 			sourceTree = "<group>";
 		};
