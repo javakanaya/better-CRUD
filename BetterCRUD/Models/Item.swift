@@ -10,11 +10,11 @@ import SwiftData
 
 @Model
 final class Item: Identifiable {
-  var id: UUID
+  @Attribute(.unique) var id: UUID
   var name: String
 
-  init(id: UUID = UUID(), name: String) {
-    self.id = id
+  init(name: String) {
+    id = UUID()
     self.name = name
   }
 }
