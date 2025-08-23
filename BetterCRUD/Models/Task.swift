@@ -20,7 +20,7 @@ final class Task {
   // @Attribute(.unique): Ensures this property has unique values across all Task instances
   // Similar to PRIMARY KEY in SQL databases
   @Attribute(.unique) var id: UUID
-  
+
   // SwiftData automatically persists these properties
   var title: String
   var isCompleted: Bool

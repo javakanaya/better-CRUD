@@ -13,17 +13,17 @@ struct TaskListView: View {
   // SwiftUI manages lifecycle - creates once, keeps alive as long as view exists
   // Use @StateObject when THIS view creates the object
   @StateObject private var viewModel: TaskViewModel
-  
+
   // @State: Local view state for controlling sheet presentations
   @State private var showAddView: Bool = false
   @State private var selectedTask: Task?
-  
+
   // Custom initializer that creates ViewModel with provided context
   // This establishes the connection between SwiftData and the ViewModel
   init(context: ModelContext) {
     _viewModel = StateObject(wrappedValue: TaskViewModel(context: context))
   }
-  
+
   var body: some View {
     NavigationStack {
       List {
@@ -45,10 +45,10 @@ struct TaskListView: View {
         // onDelete: SwiftUI's built-in swipe-to-delete functionality
         // IndexSet contains the positions of items to delete
         .onDelete { indexSet in
-            for index in indexSet {
-                let task = viewModel.tasks[index]
-                viewModel.deleteTask(task)
-            }
+          for index in indexSet {
+            let task = viewModel.tasks[index]
+            viewModel.deleteTask(task)
+          }
         }
       }
       .navigationTitle("Tasks")
