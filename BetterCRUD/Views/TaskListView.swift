@@ -45,8 +45,10 @@ struct TaskListView: View {
         // onDelete: SwiftUI's built-in swipe-to-delete functionality
         // IndexSet contains the positions of items to delete
         .onDelete { indexSet in
-          // Map indices to actual Task objects and delete them
-          indexSet.map { viewModel.tasks[$0] }.forEach(viewModel.deleteTask)
+            for index in indexSet {
+                let task = viewModel.tasks[index]
+                viewModel.deleteTask(task)
+            }
         }
       }
       .navigationTitle("Tasks")
