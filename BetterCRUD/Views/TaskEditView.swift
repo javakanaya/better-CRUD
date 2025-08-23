@@ -19,6 +19,7 @@ struct TaskEditView: View {
   // These hold the temporary editing state until save/cancel
   @State private var title: String = ""
   @State private var isCompleted: Bool = false
+  @State private var newItemName: String = ""
 
   // The task being edited - passed in during initialization
   private let task: Task
@@ -36,10 +37,40 @@ struct TaskEditView: View {
   var body: some View {
     NavigationStack {
       Form {
-        // Two-way binding: changes in TextField update @State title
-        TextField("Title", text: $title)
-        // Toggle for completion status
-        Toggle("Completed", isOn: $isCompleted)
+        Section("Task Details") {
+          // Two-way binding: changes in TextField update @State title
+          TextField("Title", text: $title)
+          // Toggle for completion status
+          Toggle("Completed", isOn: $isCompleted)
+        }
+        
+        Section("Items") {
+          // Display existing items
+          ForEach(task.items) { item in
+            HStack {
+              Text(item.name)
+              Spacer()
+              Button(action: { 
+                viewModel.deleteItem(item)
+              }) {
+                Image(systemName: "trash")
+                  .foregroundColor(.red)
+              }
+            }
+          }
+          
+          // Add new item form
+          HStack {
+            TextField("New item name", text: $newItemName)
+            Button("Add") {
+              if !newItemName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                viewModel.addItem(to: task, name: newItemName)
+                newItemName = ""
+              }
+            }
+            .disabled(newItemName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+          }
+        }
       }
       .navigationTitle("Edit Task")
       .toolbar {

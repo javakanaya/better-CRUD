@@ -24,11 +24,17 @@ final class Task {
   // SwiftData automatically persists these properties
   var title: String
   var isCompleted: Bool
+  
+  // One-to-many relationship: One Task can have multiple Items
+  // @Relationship(.cascade): When a Task is deleted, all its Items are automatically deleted
+  @Relationship(deleteRule: .cascade, inverse: \Item.task)
+  var items: [Item] = []
 
   init(title: String, isCompleted: Bool = false) {
     // UUID() generates a unique identifier for each task instance
     id = UUID()
     self.title = title
     self.isCompleted = isCompleted
+    self.items = []
   }
 }

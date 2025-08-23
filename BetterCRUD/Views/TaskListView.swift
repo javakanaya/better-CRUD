@@ -34,11 +34,23 @@ struct TaskListView: View {
             selectedTask = task // Set selected task to trigger edit sheet
           } label: {
             HStack {
-              // Dynamic icon based on completion status
-              Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                .foregroundStyle(task.isCompleted ? .green : .gray)
-              Text(task.title)
-                .strikethrough(task.isCompleted) // Visual feedback for completed tasks
+              VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                  // Dynamic icon based on completion status
+                  Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(task.isCompleted ? .green : .gray)
+                  Text(task.title)
+                    .strikethrough(task.isCompleted) // Visual feedback for completed tasks
+                }
+                
+                // Show item count
+                if !task.items.isEmpty {
+                  Text("\(task.items.count) item\(task.items.count == 1 ? "" : "s")")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+              }
+              Spacer()
             }
           }
         }
@@ -53,9 +65,17 @@ struct TaskListView: View {
       }
       .navigationTitle("Tasks")
       .toolbar {
-        Button(action: { showAddView = true }, label: {
-          Image(systemName: "plus")
-        })
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button(action: { showAddView = true }, label: {
+            Image(systemName: "plus")
+          })
+        }
+        
+        ToolbarItem(placement: .navigationBarLeading) {
+          NavigationLink(destination: ItemListView(context: viewModel.context)) {
+            Image(systemName: "list.bullet")
+          }
+        }
       }
       // Sheet presentation with item binding
       // When selectedTask becomes non-nil, sheet appears

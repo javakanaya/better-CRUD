@@ -15,20 +15,37 @@ struct PreviewData {
     do {
       // isStoredInMemoryOnly: false means data persists during preview session
       // This allows previews to maintain state while developing
-      let container = try ModelContainer(for: Task.self, configurations: .init(isStoredInMemoryOnly: false))
+      let container = try ModelContainer(for: Task.self, Item.self, configurations: .init(isStoredInMemoryOnly: false))
 
       // Create sample data for previews
       // This provides realistic data for UI development and testing
       let context = container.mainContext
-      let sampleTasks = [
-        Task(title: "Buy gorceries"),
-        Task(title: "Learn SwiftUI", isCompleted: true),
-        Task(title: "Call Mom"),
-      ]
+      
+      // Create sample tasks with items
+      let groceryTask = Task(title: "Buy groceries")
+      let learningTask = Task(title: "Learn SwiftUI", isCompleted: true)
+      let personalTask = Task(title: "Call Mom")
+      
+      // Add items to grocery task
+      let milk = Item(name: "Milk", task: groceryTask)
+      let bread = Item(name: "Bread", task: groceryTask)
+      let eggs = Item(name: "Eggs", task: groceryTask)
+      groceryTask.items = [milk, bread, eggs]
+      
+      // Add items to learning task
+      let tutorial = Item(name: "Complete SwiftData tutorial", task: learningTask)
+      let project = Item(name: "Build sample project", task: learningTask)
+      learningTask.items = [tutorial, project]
+      
+      let sampleTasks = [groceryTask, learningTask, personalTask]
+      let sampleItems = [milk, bread, eggs, tutorial, project]
 
-      // Insert sample tasks into the preview database
+      // Insert sample data into the preview database
       for sampleTask in sampleTasks {
         context.insert(sampleTask)
+      }
+      for sampleItem in sampleItems {
+        context.insert(sampleItem)
       }
 
       // Save the sample data to make it available in previews

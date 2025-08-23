@@ -23,9 +23,9 @@ struct TaskModelContainer {
   // - Handles schema migrations and data persistence
   static let shared: ModelContainer = {
     do {
-      // Create container for Task model
-      // This sets up the underlying SQLite database with Task schema
-      let container = try ModelContainer(for: Task.self)
+      // Create container for both Task and Item models
+      // This sets up the underlying SQLite database with both schemas and their relationship
+      let container = try ModelContainer(for: Task.self, Item.self)
       return container
     } catch {
       // Fatal error if database setup fails - app cannot function without persistence

@@ -15,7 +15,12 @@ import SwiftData
 class TaskViewModel: ObservableObject {
   // ModelContext: The "workspace" for database operations
   // Think of it as a session where you perform CRUD operations
-  private var context: ModelContext
+  private var _context: ModelContext
+  
+  // Public access to context for other ViewModels
+  var context: ModelContext {
+    return _context
+  }
 
   // @Published: Automatically notifies SwiftUI views when this array changes
   // This creates the reactive connection between data and UI
@@ -24,42 +29,54 @@ class TaskViewModel: ObservableObject {
   // Dependency injection: Context is provided from outside (usually from a View)
   // This makes the ViewModel testable and flexible
   init(context: ModelContext) {
-    self.context = context
+    self._context = context
     fetchTasks() // Load initial data when ViewModel is created
   }
 
-  // CRUD Operation: READ
   // FetchDescriptor: Defines how to query the database
-  // Similar to "SELECT * FROM Task ORDER BY title" in SQL
   func fetchTasks() {
     let descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.title)])
     do {
-      tasks = try context.fetch(descriptor)
+      tasks = try _context.fetch(descriptor)
     } catch {
       print("Failed to fetch tasks: \(error)")
     }
   }
 
-  // CRUD Operation: CREATE
-  // Creates new Task instance and persists it to database
-  func addTask(title: String) {
+  func addTask(title: String, itemNames: [String] = []) {
     let task = Task(title: title)
-    context.insert(task) // Add to context (like staging area)
-    saveContext() // Actually save to database and refresh UI
+    
+    // Add items to the task
+    for itemName in itemNames {
+      let item = Item(name: itemName, task: task)
+      task.items.append(item)
+      _context.insert(item)
+    }
+    
+    _context.insert(task)
+    saveContext()
   }
 
-  // CRUD Operation: UPDATE
-  // Modifies existing Task properties and persists changes
   func updateTask(_ task: Task, title: String, isCompleted: Bool) {
     task.title = title
     task.isCompleted = isCompleted
-    saveContext() // Save changes to database
+    saveContext()
+  }
+  
+  func addItem(to task: Task, name: String) {
+    let item = Item(name: name, task: task)
+    task.items.append(item)
+    _context.insert(item)
+    saveContext()
+  }
+  
+  func deleteItem(_ item: Item) {
+    _context.delete(item)
+    saveContext()
   }
 
-  // CRUD Operation: DELETE
-  // Removes Task from database
   func deleteTask(_ task: Task) {
-    context.delete(task)
+    _context.delete(task)
     saveContext()
   }
 
@@ -69,7 +86,7 @@ class TaskViewModel: ObservableObject {
   // 3. Error handling for save operations
   private func saveContext() {
     do {
-      try context.save() // Persist changes to SQLite database
+      try _context.save() // Persist changes to SQLite database
       fetchTasks() // Reload data to update @Published tasks array (triggers UI refresh)
     } catch {
       print("Failed to save context: \(error)")

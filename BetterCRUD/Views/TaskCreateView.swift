@@ -19,11 +19,41 @@ struct TaskCreateView: View {
 
   // @State: Local view state for form input
   @State private var title: String = ""
-
+  @State private var items: [String] = [""]
+  
   var body: some View {
     NavigationStack {
       Form {
-        TextField("Task Title", text: $title)
+        Section("Task Details") {
+          TextField("Task Title", text: $title)
+        }
+        
+        Section("Items") {
+          ForEach(items.indices, id: \.self) { index in
+            HStack {
+              TextField("Item name", text: $items[index])
+              
+              if items.count > 1 {
+                Button(action: { 
+                  items.remove(at: index) 
+                }) {
+                  Image(systemName: "minus.circle.fill")
+                    .foregroundColor(.red)
+                }
+              }
+            }
+          }
+          
+          Button(action: { 
+            items.append("") 
+          }) {
+            HStack {
+              Image(systemName: "plus.circle.fill")
+                .foregroundColor(.green)
+              Text("Add Item")
+            }
+          }
+        }
       }
       .navigationTitle("New Task")
       .toolbar {
@@ -37,7 +67,9 @@ struct TaskCreateView: View {
         // Save button - creates new task and dismisses view
         ToolbarItem(placement: .confirmationAction) {
           Button("Save") {
-            viewModel.addTask(title: title) // Call ViewModel method to create task
+            // Filter out empty items and create the task with items
+            let nonEmptyItems = items.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            viewModel.addTask(title: title, itemNames: nonEmptyItems)
             dismiss() // Close the sheet after saving
           }
           // Disable save button when title is empty to prevent invalid data
