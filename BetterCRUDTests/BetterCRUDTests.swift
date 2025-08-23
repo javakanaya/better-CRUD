@@ -5,13 +5,11 @@
 //  Created by Java Kanaya Prada on 17/08/25.
 //
 
-import Testing
 @testable import BetterCRUD
+import Testing
 
 struct BetterCRUDTests {
-
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-    }
-
+  @Test func example() async throws {
+    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+  }
 }

@@ -7,7 +7,6 @@
 
 import SwiftData
 
-
 /// @MainActor is a global actor that uses the main queue for executing its work.
 /// In practice, this means methods or types marked with @MainActor can (for the most part) safely modify the UI
 /// because it will always be running on the main queue,
