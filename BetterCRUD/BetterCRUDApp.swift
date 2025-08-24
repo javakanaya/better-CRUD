@@ -13,9 +13,9 @@ import SwiftUI
 struct BetterCRUDApp: App {
   var body: some Scene {
     WindowGroup {
-      // Root view of the app - TaskListView with the main context
-      // This establishes the connection between SwiftData and the UI
-      TaskListView(context: TaskModelContainer.shared.mainContext)
+      // Root view of the app - ContentView with TabView containing TaskListView and other tabs
+      // This establishes the connection between SwiftData and the UI through the context
+      ContentView(context: TaskModelContainer.shared.mainContext)
     }
     // .modelContainer: Provides the SwiftData container to the entire view hierarchy
     // This enables SwiftData functionality throughout the app
