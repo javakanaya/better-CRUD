@@ -26,11 +26,13 @@ final class Task: Identifiable {
   // SwiftData automatically persists these properties
   var title: String
   var isCompleted: Bool
+  var items: [Item] = []
 
-  init(title: String, isCompleted: Bool = false) {
+  init(title: String, isCompleted: Bool = false, items: [Item] = []) {
     // UUID() generates a unique identifier for each task instance
     id = UUID()
     self.title = title
     self.isCompleted = isCompleted
+    self.items = items
   }
 }

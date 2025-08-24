@@ -28,9 +28,7 @@ class TaskViewModel: ObservableObject {
     fetchTasks() // Load initial data when ViewModel is created
   }
 
-  // CRUD Operation: READ
-  // FetchDescriptor: Defines how to query the database
-  // Similar to "SELECT * FROM Task ORDER BY title" in SQL
+  
   func fetchTasks() {
     let descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.title)])
     do {
@@ -40,24 +38,27 @@ class TaskViewModel: ObservableObject {
     }
   }
 
-  // CRUD Operation: CREATE
-  // Creates new Task instance and persists it to database
-  func addTask(title: String) {
+  func createTask(title: String, itemNames: [String] = []) {
     let task = Task(title: title)
-    context.insert(task) // Add to context (like staging area)
-    saveContext() // Actually save to database and refresh UI
+    
+    for itemName in itemNames {
+      let item = Item(name: itemName)
+      task.items.append(item)
+    }
+    
+    
+    context.insert(task)
+    saveContext()
   }
 
-  // CRUD Operation: UPDATE
-  // Modifies existing Task properties and persists changes
-  func updateTask(_ task: Task, title: String, isCompleted: Bool) {
+
+  func updateTask(_ task: Task, title: String, isCompleted: Bool, items: [Item] = []) {
     task.title = title
     task.isCompleted = isCompleted
-    saveContext() // Save changes to database
+    task.items = items
+    saveContext()
   }
 
-  // CRUD Operation: DELETE
-  // Removes Task from database
   func deleteTask(_ task: Task) {
     context.delete(task)
     saveContext()

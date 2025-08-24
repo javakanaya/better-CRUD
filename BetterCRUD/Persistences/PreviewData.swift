@@ -15,7 +15,7 @@ struct PreviewData {
     do {
       // isStoredInMemoryOnly: false means data persists during preview session
       // This allows previews to maintain state while developing
-      let container = try ModelContainer(for: Task.self, configurations: .init(isStoredInMemoryOnly: false))
+      let container = try ModelContainer(for: Task.self, configurations: .init(isStoredInMemoryOnly: true))
 
       // Create sample data for previews
       // This provides realistic data for UI development and testing
