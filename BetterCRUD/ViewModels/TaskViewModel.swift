@@ -42,8 +42,12 @@ class TaskViewModel: ObservableObject {
     let task = Task(title: title)
     
     for itemName in itemNames {
-      let item = Item(name: itemName)
-      task.items.append(item)
+      // Skip empty or whitespace-only item names
+      let trimmedName = itemName.trimmingCharacters(in: .whitespacesAndNewlines)
+      if !trimmedName.isEmpty {
+        let item = Item(name: trimmedName)
+        task.items.append(item)
+      }
     }
     
     
@@ -55,7 +59,14 @@ class TaskViewModel: ObservableObject {
   func updateTask(_ task: Task, title: String, isCompleted: Bool, items: [Item] = []) {
     task.title = title
     task.isCompleted = isCompleted
-    task.items = items
+    
+    // Filter out items with empty or whitespace-only names
+    let validItems = items.filter { item in
+      let trimmedName = item.name.trimmingCharacters(in: .whitespacesAndNewlines)
+      return !trimmedName.isEmpty
+    }
+    
+    task.items = validItems
     saveContext()
   }
 
