@@ -11,12 +11,17 @@ import SwiftUI
 struct ContentView: View {
     let context: ModelContext
     
+    // Query for uncompleted tasks to show in badge
+    @Query(filter: #Predicate<Task> { task in
+        task.isCompleted == false
+    }) private var uncompletedTasks: [Task]
+    
     var body: some View {
         TabView {
             Tab("Tasks", systemImage: "checkmark.circle") {
                 TaskListView(context: context)
             }
-            .badge(items.count)
+            .badge(uncompletedTasks.count)
             
             Tab("Items", systemImage: "list.bullet") {
                 Text("Items")
