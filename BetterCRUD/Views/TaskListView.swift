@@ -34,7 +34,6 @@ struct TaskListView: View {
             selectedTask = task // Set selected task to trigger edit sheet
           } label: {
             HStack {
-              // Dynamic icon based on completion status
               Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                 .foregroundStyle(task.isCompleted ? .green : .gray)
               Text(task.title)
@@ -42,8 +41,6 @@ struct TaskListView: View {
             }
           }
         }
-        // onDelete: SwiftUI's built-in swipe-to-delete functionality
-        // IndexSet contains the positions of items to delete
         .onDelete { indexSet in
           for index in indexSet {
             let task = viewModel.tasks[index]
