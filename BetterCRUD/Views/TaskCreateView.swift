@@ -77,9 +77,11 @@ struct TaskCreateView: View {
 }
 
 #Preview {
+  let container = PreviewDataContainer.make()
+  
   TaskCreateView(
     viewModel: TaskViewModel(
-      context: PreviewData.container.mainContext
+      context: container.mainContext
     )
-  ).modelContainer(PreviewData.container)
+  ).modelContainer(container)
 }

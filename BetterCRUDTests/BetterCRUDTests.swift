@@ -11,14 +11,14 @@ import Testing
 
 @MainActor
 struct BetterCRUDTests {
-  let container = MockContainer.make()
+  let container = MockDataContainer.make()
   var context: ModelContext { container.mainContext }
 
   // MARK: - Basic CRUD Tests
 
-  @Test func addTask() {
+  @Test func createTask() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "Test Task")
+    viewModel.createTask(title: "Test Task")
 
     #expect(viewModel.tasks.count == 1)
     #expect(viewModel.tasks.first?.title == "Test Task")
@@ -28,7 +28,7 @@ struct BetterCRUDTests {
   @Test
   func updateTask() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "Old Title")
+    viewModel.createTask(title: "Old Title")
 
     let task = viewModel.tasks.first!
     viewModel.updateTask(task, title: "New Title", isCompleted: true)
@@ -40,7 +40,7 @@ struct BetterCRUDTests {
   @Test
   func deleteTask() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "To Delete")
+    viewModel.createTask(title: "To Delete")
 
     let task = viewModel.tasks.first!
     viewModel.deleteTask(task)
@@ -56,7 +56,7 @@ struct BetterCRUDTests {
     let taskTitles = ["Task 1", "Task 2", "Task 3"]
 
     for title in taskTitles {
-      viewModel.addTask(title: title)
+      viewModel.createTask(title: title)
     }
 
     #expect(viewModel.tasks.count == 3)
@@ -69,9 +69,9 @@ struct BetterCRUDTests {
   @Test
   func deleteSpecificTaskFromMultiple() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "Keep Task 1")
-    viewModel.addTask(title: "Delete This")
-    viewModel.addTask(title: "Keep Task 2")
+    viewModel.createTask(title: "Keep Task 1")
+    viewModel.createTask(title: "Delete This")
+    viewModel.createTask(title: "Keep Task 2")
 
     let taskToDelete = viewModel.tasks.first { $0.title == "Delete This" }!
     viewModel.deleteTask(taskToDelete)
@@ -87,7 +87,7 @@ struct BetterCRUDTests {
   @Test
   func toggleTaskCompletion() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "Toggle Task")
+    viewModel.createTask(title: "Toggle Task")
 
     let task = viewModel.tasks.first!
     #expect(task.isCompleted == false)
@@ -104,9 +104,9 @@ struct BetterCRUDTests {
   @Test
   func partialCompletionOfMultipleTasks() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "Task A")
-    viewModel.addTask(title: "Task B")
-    viewModel.addTask(title: "Task C")
+    viewModel.createTask(title: "Task A")
+    viewModel.createTask(title: "Task B")
+    viewModel.createTask(title: "Task C")
 
     // Complete only the middle task
     let taskB = viewModel.tasks.first { $0.title == "Task B" }!
@@ -123,29 +123,29 @@ struct BetterCRUDTests {
   // MARK: - Edge Cases and Data Integrity Tests
 
   @Test
-  func addTaskWithEmptyTitle() {
+  func createTaskWithEmptyTitle() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "")
+    viewModel.createTask(title: "")
 
     #expect(viewModel.tasks.count == 1)
     #expect(viewModel.tasks.first?.title == "")
   }
 
   @Test
-  func addTaskWithSpecialCharacters() {
+  func createTaskWithSpecialCharacters() {
     let viewModel = TaskViewModel(context: context)
     let specialTitle = "Task with 特殊字符 & émojis 🚀💯"
-    viewModel.addTask(title: specialTitle)
+    viewModel.createTask(title: specialTitle)
 
     #expect(viewModel.tasks.count == 1)
     #expect(viewModel.tasks.first?.title == specialTitle)
   }
 
   @Test
-  func addTaskWithVeryLongTitle() {
+  func createTaskWithVeryLongTitle() {
     let viewModel = TaskViewModel(context: context)
     let longTitle = String(repeating: "Very long task title ", count: 50)
-    viewModel.addTask(title: longTitle)
+    viewModel.createTask(title: longTitle)
 
     #expect(viewModel.tasks.count == 1)
     #expect(viewModel.tasks.first?.title == longTitle)
@@ -154,7 +154,7 @@ struct BetterCRUDTests {
   @Test
   func updateTaskWithEmptyTitle() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "Original Title")
+    viewModel.createTask(title: "Original Title")
 
     let task = viewModel.tasks.first!
     viewModel.updateTask(task, title: "", isCompleted: false)
@@ -170,7 +170,7 @@ struct BetterCRUDTests {
     let unsortedTitles = ["Zebra", "Apple", "Banana", "123 Numbers"]
 
     for title in unsortedTitles {
-      viewModel.addTask(title: title)
+      viewModel.createTask(title: title)
     }
 
     let expectedOrder = ["123 Numbers", "Apple", "Banana", "Zebra"]
@@ -184,9 +184,9 @@ struct BetterCRUDTests {
   @Test
   func uniqueTaskIDs() {
     let viewModel = TaskViewModel(context: context)
-    viewModel.addTask(title: "Task 1")
-    viewModel.addTask(title: "Task 2")
-    viewModel.addTask(title: "Task 3")
+    viewModel.createTask(title: "Task 1")
+    viewModel.createTask(title: "Task 2")
+    viewModel.createTask(title: "Task 3")
 
     let taskIDs = viewModel.tasks.map { $0.id }
     let uniqueIDs = Set(taskIDs)
@@ -207,9 +207,9 @@ struct BetterCRUDTests {
     let viewModel = TaskViewModel(context: context)
 
     // Add tasks
-    viewModel.addTask(title: "First")
-    viewModel.addTask(title: "Second")
-    viewModel.addTask(title: "Third")
+    viewModel.createTask(title: "First")
+    viewModel.createTask(title: "Second")
+    viewModel.createTask(title: "Third")
     #expect(viewModel.tasks.count == 3)
 
     // Complete one task
@@ -238,7 +238,7 @@ struct BetterCRUDTests {
 
     // Add multiple tasks
     for i in 1 ... 5 {
-      viewModel.addTask(title: "Task \(i)")
+      viewModel.createTask(title: "Task \(i)")
     }
     #expect(viewModel.tasks.count == 5)
 
@@ -256,9 +256,9 @@ struct BetterCRUDTests {
     let viewModel = TaskViewModel(context: context)
     let duplicateTitle = "Duplicate Task"
 
-    viewModel.addTask(title: duplicateTitle)
-    viewModel.addTask(title: duplicateTitle)
-    viewModel.addTask(title: duplicateTitle)
+    viewModel.createTask(title: duplicateTitle)
+    viewModel.createTask(title: duplicateTitle)
+    viewModel.createTask(title: duplicateTitle)
 
     #expect(viewModel.tasks.count == 3)
     let duplicates = viewModel.tasks.filter { $0.title == duplicateTitle }

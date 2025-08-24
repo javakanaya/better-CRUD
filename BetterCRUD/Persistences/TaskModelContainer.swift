@@ -29,7 +29,7 @@ struct TaskModelContainer {
       return container
     } catch {
       // Fatal error if database setup fails - app cannot function without persistence
-      fatalError("Failed to crate ModelContainer: \(error)")
+      fatalError("Failed to create ModelContainer: \(error)")
     }
   }()
 }

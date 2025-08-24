@@ -48,6 +48,9 @@ struct TaskEditView: View {
           ForEach(items.indices, id: \.self) { index in
             TextField("Item \(index + 1)", text: $items[index].name)
           }
+          .onDelete { offsets in
+            items.remove(atOffsets: offsets)
+          }
           
           Button(action: {
             items.append(Item(name: ""))
@@ -79,10 +82,11 @@ struct TaskEditView: View {
 }
 
 #Preview {
-  let context = PreviewData.container.mainContext
+  let container = PreviewDataContainer.make()
+  let context = container.mainContext
   // Fetch first task from preview data for demonstration
   let task = try! context.fetch(FetchDescriptor<Task>()).first!
   let vm = TaskViewModel(context: context)
   TaskEditView(viewModel: vm, task: task)
-    .modelContainer(PreviewData.container)
+    .modelContainer(container)
 }

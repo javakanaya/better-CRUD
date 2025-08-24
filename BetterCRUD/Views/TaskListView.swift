@@ -38,7 +38,7 @@ struct TaskListView: View {
               Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                 .foregroundStyle(task.isCompleted ? .green : .gray)
               Text(task.title)
-                .strikethrough(task.isCompleted) // Visual feedback for completed tasks
+                .strikethrough(task.isCompleted)
             }
           }
         }
@@ -57,13 +57,11 @@ struct TaskListView: View {
           Image(systemName: "plus")
         })
       }
-      // Sheet presentation with item binding
       // When selectedTask becomes non-nil, sheet appears
       // When sheet dismisses, selectedTask automatically becomes nil
       .sheet(item: $selectedTask, content: { task in
         TaskEditView(viewModel: viewModel, task: task)
       })
-      // Sheet presentation with boolean binding
       .sheet(isPresented: $showAddView) {
         TaskCreateView(viewModel: viewModel)
       }
@@ -72,6 +70,7 @@ struct TaskListView: View {
 }
 
 #Preview {
-  TaskListView(context: PreviewData.container.mainContext)
-    .modelContainer(PreviewData.container)
+  let container = PreviewDataContainer.make()
+  TaskListView(context: container.mainContext)
+    .modelContainer(container)
 }
