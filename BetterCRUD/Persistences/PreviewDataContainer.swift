@@ -17,6 +17,8 @@ struct PreviewDataContainer {
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
       )
       
+      let context = container.mainContext
+      
       let sampleTasks = [
         Task(title: "Buy groceries"),
         Task(title: "Learn SwiftUI", isCompleted: true, items: [Item(name: "Components"), Item(name: "Performance")]),
@@ -25,12 +27,20 @@ struct PreviewDataContainer {
         Task(title: "Review code", isCompleted: true)
       ]
       
-      let context = container.mainContext
-      
       for task in sampleTasks {
         context.insert(task)
       }
+        
+      let sampleItems = [
+        Item(name: "Do something"),
+        Item(name: "Do another thing"),
+        Item(name: "Do yet another thing"),
+      ]
       
+      for item in sampleItems {
+        context.insert(item)
+      }
+    
       try context.save()
       
       return container

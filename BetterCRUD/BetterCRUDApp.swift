@@ -15,10 +15,10 @@ struct BetterCRUDApp: App {
     WindowGroup {
       // Root view of the app - ContentView with TabView containing TaskListView and other tabs
       // This establishes the connection between SwiftData and the UI through the context
-      ContentView(context: TaskModelContainer.shared.mainContext)
+      ContentView(context: AppModelContainer.shared.mainContext)
     }
     // .modelContainer: Provides the SwiftData container to the entire view hierarchy
     // This enables SwiftData functionality throughout the app
-    .modelContainer(TaskModelContainer.shared)
+    .modelContainer(AppModelContainer.shared)
   }
 }

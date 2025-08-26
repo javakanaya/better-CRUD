@@ -6,13 +6,31 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ItemListView: View {
+    @StateObject private var viewModel: ItemViewModel
+    
+    init(context: ModelContext) {
+      _viewModel = StateObject(wrappedValue: ItemViewModel(context: context))
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            List {
+              ForEach(viewModel.items) { item in
+                ItemRow(item: item)
+              }
+            }
+            .navigationTitle("Items")
+        }
     }
 }
 
+
+
 #Preview {
-    ItemListView()
+  let container = PreviewDataContainer.make()
+  ItemListView(context: container.mainContext)
+    .modelContainer(container)
 }

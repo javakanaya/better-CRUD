@@ -29,15 +29,19 @@ class ItemViewModel: ObservableObject {
     }
   }
 
-  func createItem(name: String) {
-    let item = Item(name: name)
+
+  func createItem(name: String, task: Task? = nil) {
+    let item = Item(name: name, task: task)
     context.insert(item)
     saveContext()
   }
 
 
-  func updateItem(_ item: Item, name: String, task: Task?) {
+  func updateItem(_ item: Item, name: String, task: Task? = nil) {
     item.name = name
+    if let task = task {
+      item.task = task
+    }
     saveContext()
   }
 

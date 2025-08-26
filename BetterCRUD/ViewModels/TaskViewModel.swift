@@ -76,6 +76,16 @@ class TaskViewModel: ObservableObject {
     saveContext()
   }
 
+  func getAllTasks() -> [Task] {
+    let descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.title)])
+    do {
+      return try context.fetch(descriptor)
+    } catch {
+      print("Failed to fetch all tasks: \(error)")
+      return []
+    }
+  }
+
   // Private helper method that handles:
   // 1. Saving context changes to database
   // 2. Refreshing the tasks array to update UI

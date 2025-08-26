@@ -24,7 +24,7 @@ struct ContentView: View {
             .badge(uncompletedTasks.count)
             
             Tab("Items", systemImage: "list.bullet") {
-                Text("Items")
+                ItemListView(context: context)
             }
         }
     }

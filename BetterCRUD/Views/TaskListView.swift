@@ -33,12 +33,7 @@ struct TaskListView: View {
           Button {
             selectedTask = task // Set selected task to trigger edit sheet
           } label: {
-            HStack {
-              Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                .foregroundStyle(task.isCompleted ? .green : .gray)
-              Text(task.title)
-                .strikethrough(task.isCompleted)
-            }
+            TaskRow(task: task)
           }
         }
         .onDelete { indexSet in
@@ -71,3 +66,4 @@ struct TaskListView: View {
   TaskListView(context: container.mainContext)
     .modelContainer(container)
 }
+
