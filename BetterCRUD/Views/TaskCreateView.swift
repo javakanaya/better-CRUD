@@ -11,29 +11,28 @@ struct TaskCreateView: View {
   // @Environment: Accesses SwiftUI's environment values
   // dismiss: Function to programmatically close this view
   @Environment(\.dismiss) private var dismiss
-  
+
   // @ObservedObject: Observes an existing ViewModel instance passed from parent
   // This view doesn't own the ViewModel - it receives it from TaskListView
   // Use @ObservedObject when the object comes from elsewhere
   @ObservedObject var viewModel: TaskViewModel
-  
+
   // @State: Local view state for form input
   @State private var title: String = ""
   @State private var itemNames: [String] = [""]
-  
+
   var body: some View {
     NavigationStack {
       Form {
-        
         Section("Task Details") {
           TextField("Task Title", text: $title)
         }
-        
+
         Section("Items") {
           ForEach(itemNames.indices, id: \.self) { index in
             HStack {
               TextField("Item name", text: $itemNames[index])
-              
+
               if itemNames.count > 1 {
                 Button(action: {
                   itemNames.remove(at: index)
@@ -43,7 +42,7 @@ struct TaskCreateView: View {
               }
             }
           }
-          
+
           Button(action: {
             itemNames.append("")
           }, label: {
@@ -52,7 +51,6 @@ struct TaskCreateView: View {
               Text("Add Item")
             }
           })
-          
         }
       }
       .navigationTitle("New Task")
@@ -62,7 +60,7 @@ struct TaskCreateView: View {
             dismiss()
           }
         }
-        
+
         ToolbarItem(placement: .confirmationAction) {
           Button("Save") {
             viewModel.createTask(title: title, itemNames: itemNames)
@@ -78,7 +76,7 @@ struct TaskCreateView: View {
 
 #Preview {
   let container = PreviewDataContainer.make()
-  
+
   TaskCreateView(
     viewModel: TaskViewModel(
       context: container.mainContext

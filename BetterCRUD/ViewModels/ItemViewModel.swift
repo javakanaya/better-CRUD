@@ -11,7 +11,7 @@ import SwiftData
 @MainActor
 class ItemViewModel: ObservableObject {
   private var context: ModelContext
-  
+
   @Published var items: [Item] = []
 
   init(context: ModelContext) {
@@ -19,7 +19,6 @@ class ItemViewModel: ObservableObject {
     fetchItems()
   }
 
-  
   func fetchItems() {
     let descriptor = FetchDescriptor<Item>(sortBy: [SortDescriptor(\.name)])
     do {
@@ -29,13 +28,11 @@ class ItemViewModel: ObservableObject {
     }
   }
 
-
   func createItem(name: String, task: Task? = nil) {
     let item = Item(name: name, task: task)
     context.insert(item)
     saveContext()
   }
-
 
   func updateItem(_ item: Item, name: String, task: Task? = nil) {
     item.name = name
@@ -53,7 +50,7 @@ class ItemViewModel: ObservableObject {
   private func saveContext() {
     do {
       try context.save()
-      fetchItems() 
+      fetchItems()
     } catch {
       print("Failed to save context: \(error)")
     }

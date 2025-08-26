@@ -15,11 +15,10 @@ struct MockDataContainer {
         for: Task.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
       )
-      
+
       return container
     } catch {
       fatalError("Failed to create mock container: \(error)")
     }
   }
-  
 }

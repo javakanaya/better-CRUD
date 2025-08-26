@@ -28,7 +28,6 @@ class TaskViewModel: ObservableObject {
     fetchTasks() // Load initial data when ViewModel is created
   }
 
-  
   func fetchTasks() {
     let descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.title)])
     do {
@@ -40,7 +39,7 @@ class TaskViewModel: ObservableObject {
 
   func createTask(title: String, itemNames: [String] = []) {
     let task = Task(title: title)
-    
+
     for itemName in itemNames {
       // Skip empty or whitespace-only item names
       let trimmedName = itemName.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -50,23 +49,21 @@ class TaskViewModel: ObservableObject {
         task.items.append(item)
       }
     }
-    
-    
+
     context.insert(task)
     saveContext()
   }
 
-
   func updateTask(_ task: Task, title: String, isCompleted: Bool, items: [Item] = []) {
     task.title = title
     task.isCompleted = isCompleted
-    
+
     // Filter out items with empty or whitespace-only names
     let validItems = items.filter { item in
       let trimmedName = item.name.trimmingCharacters(in: .whitespacesAndNewlines)
       return !trimmedName.isEmpty
     }
-    
+
     task.items = validItems
     saveContext()
   }

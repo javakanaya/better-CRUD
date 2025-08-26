@@ -66,4 +66,3 @@ struct TaskListView: View {
   TaskListView(context: container.mainContext)
     .modelContainer(container)
 }
-

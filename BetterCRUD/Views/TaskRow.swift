@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TaskRow: View {
   var task: Task
-  
+
   var body: some View {
     HStack {
       Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")

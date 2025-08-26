@@ -10,20 +10,20 @@ import SwiftUI
 
 struct TaskEditView: View {
   @Environment(\.dismiss) private var dismiss
-  
+
   // @ObservedObject: Receives ViewModel from parent view (TaskListView)
   // Allows this view to observe changes and call ViewModel methods
   @ObservedObject var viewModel: TaskViewModel
-  
+
   // @State: Local form state initialized with existing task values
   // These hold the temporary editing state until save/cancel
   @State private var title: String = ""
   @State private var items: [Item] = []
   @State private var isCompleted: Bool = false
-  
+
   // The task being edited - passed in during initialization
   private let task: Task
-  
+
   // Custom initializer that pre-populates form fields with existing task data
   // _title and _isCompleted use State(initialValue:) to set initial values
   init(viewModel: TaskViewModel, task: Task) {
@@ -33,10 +33,8 @@ struct TaskEditView: View {
     _title = State(initialValue: task.title)
     _isCompleted = State(initialValue: task.isCompleted)
     _items = State(initialValue: task.items)
-    
   }
 
-  
   var body: some View {
     NavigationStack {
       Form {
@@ -51,7 +49,7 @@ struct TaskEditView: View {
           .onDelete { offsets in
             items.remove(atOffsets: offsets)
           }
-          
+
           Button(action: {
             items.append(Item(name: ""))
           }) {
@@ -69,7 +67,7 @@ struct TaskEditView: View {
             dismiss()
           }
         }
-        
+
         ToolbarItem(placement: .confirmationAction) {
           Button("Save") {
             viewModel.updateTask(task, title: title, isCompleted: isCompleted, items: items)
