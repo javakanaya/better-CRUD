@@ -12,9 +12,11 @@ import SwiftData
 final class Item: Identifiable {
   @Attribute(.unique) var id: UUID
   var name: String
+  var task: Task?
 
-  init(name: String) {
+  init(name: String, task: Task? = nil) {
     id = UUID()
     self.name = name
+    self.task = task
   }
 }

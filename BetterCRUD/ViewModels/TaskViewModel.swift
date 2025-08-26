@@ -45,7 +45,8 @@ class TaskViewModel: ObservableObject {
       // Skip empty or whitespace-only item names
       let trimmedName = itemName.trimmingCharacters(in: .whitespacesAndNewlines)
       if !trimmedName.isEmpty {
-        let item = Item(name: trimmedName)
+        let item = Item(name: trimmedName, task: task)
+        context.insert(item)
         task.items.append(item)
       }
     }

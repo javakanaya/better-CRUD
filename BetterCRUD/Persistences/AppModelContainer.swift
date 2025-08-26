@@ -15,7 +15,7 @@ import SwiftData
 // @MainActor ensures this struct and its properties are accessed only on the main thread
 // Critical for UI-related data operations
 @MainActor
-struct TaskModelContainer {
+struct AppModelContainer {
   // Singleton pattern: One shared container for the entire app
   // ModelContainer is like a database connection manager
   // - Manages the SQLite database file
@@ -24,8 +24,9 @@ struct TaskModelContainer {
   static let shared: ModelContainer = {
     do {
       // Create container for Task model
-      // This sets up the underlying SQLite database with Task schema
-      let container = try ModelContainer(for: Task.self)
+      // This sets up the underlying SQLite database with the schema
+      let schema = Schema([Task.self, Item.self])
+      let container = try ModelContainer(for: schema)
       return container
     } catch {
       // Fatal error if database setup fails - app cannot function without persistence
