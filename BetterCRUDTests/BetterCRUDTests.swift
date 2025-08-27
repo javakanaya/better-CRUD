@@ -9,12 +9,12 @@
 import SwiftData
 import Testing
 
+// MARK: - Basic CRUD Tests
+
 @MainActor
-struct BetterCRUDTests {
+struct BasicCRUDTests {
   let container = MockDataContainer.make()
   var context: ModelContext { container.mainContext }
-
-  // MARK: - Basic CRUD Tests
 
   @Test func createTask() {
     let viewModel = TaskViewModel(context: context)
@@ -47,8 +47,14 @@ struct BetterCRUDTests {
 
     #expect(viewModel.tasks.isEmpty)
   }
+}
 
-  // MARK: - Multiple Tasks Tests
+// MARK: - Multiple Tasks Tests
+
+@MainActor
+struct MultipleTasksTests {
+  let container = MockDataContainer.make()
+  var context: ModelContext { container.mainContext }
 
   @Test
   func addMultipleTasks() {
@@ -81,8 +87,14 @@ struct BetterCRUDTests {
     #expect(viewModel.tasks.contains { $0.title == "Keep Task 1" })
     #expect(viewModel.tasks.contains { $0.title == "Keep Task 2" })
   }
+}
 
-  // MARK: - Task Completion Tests
+// MARK: - Task Completion Tests
+
+@MainActor
+struct TaskCompletionTests {
+  let container = MockDataContainer.make()
+  var context: ModelContext { container.mainContext }
 
   @Test
   func toggleTaskCompletion() {
@@ -119,8 +131,14 @@ struct BetterCRUDTests {
     #expect(incompleteTasks.count == 2)
     #expect(completedTasks.first?.title == "Task B")
   }
+}
 
-  // MARK: - Edge Cases and Data Integrity Tests
+// MARK: - Edge Cases and Data Integrity Tests
+
+@MainActor
+struct EdgeCasesTests {
+  let container = MockDataContainer.make()
+  var context: ModelContext { container.mainContext }
 
   @Test
   func createTaskWithEmptyTitle() {
@@ -161,8 +179,14 @@ struct BetterCRUDTests {
 
     #expect(viewModel.tasks.first?.title == "")
   }
+}
 
-  // MARK: - Data Persistence and Sorting Tests
+// MARK: - Data Persistence and Sorting Tests
+
+@MainActor
+struct DataPersistenceTests {
+  let container = MockDataContainer.make()
+  var context: ModelContext { container.mainContext }
 
   @Test
   func tasksSortedAlphabetically() {
@@ -193,8 +217,14 @@ struct BetterCRUDTests {
 
     #expect(taskIDs.count == uniqueIDs.count) // All IDs should be unique
   }
+}
 
-  // MARK: - State Management Tests
+// MARK: - State Management Tests
+
+@MainActor
+struct StateManagementTests {
+  let container = MockDataContainer.make()
+  var context: ModelContext { container.mainContext }
 
   @Test
   func freshViewModelStartsEmpty() {
@@ -229,8 +259,14 @@ struct BetterCRUDTests {
     #expect(remainingTitles.contains("First Updated"))
     #expect(remainingTitles.contains("Third"))
   }
+}
 
-  // MARK: - Boundary Tests
+// MARK: - Boundary Tests
+
+@MainActor
+struct BoundaryTests {
+  let container = MockDataContainer.make()
+  var context: ModelContext { container.mainContext }
 
   @Test
   func deleteAllTasks() {
