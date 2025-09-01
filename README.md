@@ -19,8 +19,6 @@ BetterCRUD/
 ├── Persistences/     # Data containers (AppModelContainer, MockDataContainer, PreviewDataContainer)
 ├── BetterCRUDTests/  # Unit tests
 ├── BetterCRUDUITests/# UI tests
-├── Assets.xcassets/  # App icons and colors
-├── Info.plist        # App configuration
 └── BetterCRUDApp.swift # App entry point
 ```
 
